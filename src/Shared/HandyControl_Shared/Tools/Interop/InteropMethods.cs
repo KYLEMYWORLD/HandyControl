@@ -43,6 +43,13 @@ namespace HandyControl.Tools.Interop
         [DllImport(InteropValues.ExternDll.User32, SetLastError = true, CharSet = CharSet.Auto)]
         internal static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
+        [DllImport(InteropValues.ExternDll.User32, SetLastError = true, CharSet = CharSet.Auto)]
+        internal static extern bool AttachThreadInput(in uint currentForegroundWindowThreadId,
+            in uint thisWindowThreadId, bool isAttach);
+
+        [DllImport(InteropValues.ExternDll.User32, SetLastError = true, CharSet = CharSet.Auto)]
+        internal static extern IntPtr GetForegroundWindow();
+
         [DllImport(InteropValues.ExternDll.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
         internal static extern IntPtr OpenProcess(InteropValues.ProcessAccess dwDesiredAccess,
             [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, uint dwProcessId);
@@ -83,6 +90,9 @@ namespace HandyControl.Tools.Interop
 
         [DllImport(InteropValues.ExternDll.User32)]
         internal static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+
+        [DllImport(InteropValues.ExternDll.User32)]
+        internal static extern bool EnableMenuItem(IntPtr hMenu, int UIDEnabledItem, int uEnable);
 
         [DllImport(InteropValues.ExternDll.User32)]
         internal static extern bool InsertMenu(IntPtr hMenu, int wPosition, int wFlags, int wIDNewItem, string lpNewItem);
