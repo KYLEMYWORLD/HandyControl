@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using GalaSoft.MvvmLight.Messaging;
@@ -43,7 +42,7 @@ namespace HandyControlDemo.UserControl
                 if (tag.Equals(GlobalData.Config.Skin)) return;
                 GlobalData.Config.Skin = tag;
                 GlobalData.Save();
-                ((App)Application.Current).UpdateSkin(tag);
+                ((App) Application.Current).UpdateSkin(tag);
             }
         }
 

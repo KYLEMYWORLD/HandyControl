@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
 using System.Net;
 #if !NET40
@@ -9,9 +10,9 @@ using System.Runtime;
 using System.Threading;
 using System.Windows;
 using HandyControl.Data;
-using HandyControl.Themes;
 using HandyControl.Tools;
 using HandyControlDemo.Data;
+using HandyControlDemo.Properties.Langs;
 using HandyControlDemo.Tools;
 
 namespace HandyControlDemo
@@ -19,7 +20,7 @@ namespace HandyControlDemo
     public partial class App
     {
 #pragma warning disable IDE0052
-        [SuppressMessage("ReSharper", "NotAccessedField.Local")] 
+        [SuppressMessage("ReSharper", "NotAccessedField.Local")]
         private static Mutex AppMutex;
 #pragma warning restore IDE0052
 
@@ -66,6 +67,7 @@ namespace HandyControlDemo
                 ShutdownMode = ShutdownMode.OnMainWindowClose;
                 GlobalData.Init();
                 ConfigHelper.Instance.SetLang(GlobalData.Config.Lang);
+                LangProvider.Culture = new CultureInfo(GlobalData.Config.Lang);
 
                 if (GlobalData.Config.Skin != SkinType.Default)
                 {
@@ -75,7 +77,11 @@ namespace HandyControlDemo
                 ConfigHelper.Instance.SetWindowDefaultStyle();
                 ConfigHelper.Instance.SetNavigationWindowDefaultStyle();
 
+#if NET40
+                ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+#else
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+#endif
             }
         }
 
@@ -87,21 +93,20 @@ namespace HandyControlDemo
 
         internal void UpdateSkin(SkinType skin)
         {
-            SharedResourceDictionary.SharedDictionaries.Clear();
             var skins0 = Resources.MergedDictionaries[0];
             skins0.MergedDictionaries.Clear();
-            skins0.MergedDictionaries.Add(ResourceHelper.GetSkin(skin));	
-            skins0.MergedDictionaries.Add(ResourceHelper.GetSkin(typeof(App).Assembly, "Resources/Themes", skin));	
-            
-            var skins1 = Resources.MergedDictionaries[1];	
-            skins1.MergedDictionaries.Clear();	
-            skins1.MergedDictionaries.Add(new ResourceDictionary	
-            {	
-                Source = new Uri("pack://application:,,,/HandyControl;component/Themes/Theme.xaml")	
-            });	
-            skins1.MergedDictionaries.Add(new ResourceDictionary	
-            {	
-                Source = new Uri("pack://application:,,,/HandyControlDemo;component/Resources/Themes/Theme.xaml")	
+            skins0.MergedDictionaries.Add(ResourceHelper.GetSkin(skin));
+            skins0.MergedDictionaries.Add(ResourceHelper.GetSkin(typeof(App).Assembly, "Resources/Themes", skin));
+
+            var skins1 = Resources.MergedDictionaries[1];
+            skins1.MergedDictionaries.Clear();
+            skins1.MergedDictionaries.Add(new ResourceDictionary
+            {
+                Source = new Uri("pack://application:,,,/HandyControl;component/Themes/Theme.xaml")
+            });
+            skins1.MergedDictionaries.Add(new ResourceDictionary
+            {
+                Source = new Uri("pack://application:,,,/HandyControlDemo;component/Resources/Themes/Theme.xaml")
             });
 
             Current.MainWindow?.OnApplyTemplate();

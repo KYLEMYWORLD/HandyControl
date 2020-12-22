@@ -1,8 +1,8 @@
 ﻿namespace HandyControlDemo.Data
 {
-	public class MessageToken
+    public class MessageToken
     {
-	    public static readonly string LoadShowContent = nameof(LoadShowContent);
+        public static readonly string LoadShowContent = nameof(LoadShowContent);
 
         public static readonly string FullSwitch = nameof(FullSwitch);
 
@@ -45,6 +45,8 @@
         public static readonly string NativeCommonWindow = nameof(NativeCommonWindow);
 
         public static readonly string NavigationWindow = nameof(NavigationWindow);
+
+        public static readonly string TouchDragMoveWindow = nameof(TouchDragMoveWindow);
 
         public static readonly string DialogContainer = nameof(DialogContainer);
 
